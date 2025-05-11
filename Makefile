@@ -21,10 +21,11 @@ CFLAGS :=       -mcpu=cortex-m0plus \
 		-Wno-unused-function
 
 ASFLAGS := $(CFLAGS)
-LDFLAGS := -mthumb -nostdlib -Wl,--gc-sections
+LDFLAGS := -mthumb -nostdlib -Wl,--gc-sections -mcpu=cortex-m0plus
+LIBS := -lgcc
 
 S_SOURCES = src/rp2040-vectors.S src/rp2040-crt.S src/bl2.S
-C_SOURCES = src/main.c src/uart.c src/spi.c src/mini_libgcc.c src/rtc.c src/i2c.c src/tm1637.c src/mpu6050.c
+C_SOURCES = src/main.c src/uart.c src/spi.c src/mini_libgcc.c src/rtc.c src/i2c.c src/tm1637.c src/mpu6050.c src/pid.c
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(S_SOURCES:.S=.o)))
@@ -58,7 +59,7 @@ $(BUILD_DIR)/%.o: %.S
 	$(CC) -MMD -c $(ASFLAGS) $< -o $@
 
 $(BUILD_DIR)/$(PROGRAM).elf: rp2040.lds $(OBJECTS)
-	$(LD) $(LDFLAGS) -T $^ -o $@
+	$(LD) $(LDFLAGS) -T $^ $(LIBS) -o $@
 
 $(PROGRAM).uf2: $(BUILD_DIR)/$(PROGRAM).uf2
 	cp $< .

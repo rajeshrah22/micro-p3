@@ -85,6 +85,8 @@ struct i2c {
 #define IC_1_IC_STATUS_TFE				(2)
 #define IC_1_IC_STATUS_RXNE				(3)
 
+#define MPU_DATA_BUF_SIZE	2
+
 void i2c1_read_MPU6050(uint8_t dev_addr, uint8_t dev_reg_addr, uint8_t *buffer, int len);
 
 void i2c1_write_MPU6050(uint8_t dev_addr, uint8_t dev_reg_addr, uint8_t data);
